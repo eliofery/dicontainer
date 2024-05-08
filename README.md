@@ -3,6 +3,9 @@
 DI container provides a seamless way to wire up your application's components, making
 it easy to manage dependencies and promote better code organization.
 
+This package expects a functions that returns a structure object or a pointer to a structure object.
+Optionally, the second return value must be an error.
+
 ## Installation
 
 ```bash
