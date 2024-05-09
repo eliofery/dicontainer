@@ -37,13 +37,19 @@ func (d *di) setWithoutArgs(creators ...any) error {
 		creatorFunc := reflect.ValueOf(creator)
 		dependency := creatorType.Out(0)
 
-		if dependency.Kind() != reflect.Ptr && dependency.Kind() != reflect.Struct {
+		if dependency.Kind() != reflect.Ptr &&
+			dependency.Kind() != reflect.Struct &&
+			dependency.Kind() != reflect.Interface {
 			return fmt.Errorf("invalid dependency type: %v", dependency)
 		}
 
 		depName := dependency.Name()
 		if dependency.Kind() == reflect.Ptr {
 			depName = dependency.Elem().Name()
+		}
+
+		if depName == "" {
+			return fmt.Errorf("undefined dependency interface: %v", dependency)
 		}
 
 		// Call creator without arguments.
@@ -63,13 +69,19 @@ func (d *di) setWithArgs(creators ...any) error {
 		creatorType := reflect.TypeOf(creator)
 		dependency := creatorType.Out(0)
 
-		if dependency.Kind() != reflect.Ptr && dependency.Kind() != reflect.Struct {
+		if dependency.Kind() != reflect.Ptr &&
+			dependency.Kind() != reflect.Struct &&
+			dependency.Kind() != reflect.Interface {
 			return fmt.Errorf("invalid dependency type: %v", dependency)
 		}
 
 		depName := dependency.Name()
 		if dependency.Kind() == reflect.Ptr {
 			depName = dependency.Elem().Name()
+		}
+
+		if depName == "" {
+			return fmt.Errorf("undefined dependency interface: %v", dependency)
 		}
 
 		// Get arguments from creator.

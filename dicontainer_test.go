@@ -274,6 +274,23 @@ func TestSetGet_error(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "undefined dependency interface",
+			creators: []any{
+				func(ts testStruct) any {
+					return "foo bar baz"
+				},
+				func() (any, error) {
+					return "foo bar baz", nil
+				},
+				func() (any, error) {
+					return "foo bar baz", errors.New("some error")
+				},
+				func() (testStruct, error) {
+					return testStruct{}, nil
+				},
+			},
+		},
 	}
 
 	for _, test := range cases {
